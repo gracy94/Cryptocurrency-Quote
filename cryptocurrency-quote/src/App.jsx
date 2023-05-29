@@ -2,24 +2,32 @@ import { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import Form from './components/Form'
 import Result from './components/Result'
+import Spinner from './components/Spinner'
 import CryptoImage from './img/cryptocurrency.png'
 
 function App() {
 
   const [currencies, setCurrencies] = useState({})
   const [result, setResult] = useState({})
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if(Object.keys(currencies).length > 0) {
       
-      const {currency, cryptoCurrency} = currencies
+
       const calculateCrypto = async () => {
+        setLoading(true)
+        setResult({})
+        
+        const {currency, cryptoCurrency} = currencies
         const url = `https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${cryptoCurrency}&tsyms=${currency}`
         
         const answer = await fetch(url)
         const result = await answer.json()
 
         setResult(result.DISPLAY[cryptoCurrency][currency])
+
+        setLoading(false)
       }
 
       calculateCrypto()
@@ -39,6 +47,7 @@ function App() {
           setCurrencies ={setCurrencies}
         ></Form>
 
+        {loading && <Spinner/>}
         {result.PRICE && <Result result={result}/>}
       </div>
       
