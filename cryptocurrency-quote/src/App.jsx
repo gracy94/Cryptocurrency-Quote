@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import styled from '@emotion/styled'
 import Form from './components/Form'
+import Result from './components/Result'
 import CryptoImage from './img/cryptocurrency.png'
 
 function App() {
@@ -37,6 +38,8 @@ function App() {
         <Form
           setCurrencies ={setCurrencies}
         ></Form>
+
+        {result.PRICE && <Result result={result}/>}
       </div>
       
     </Container>
